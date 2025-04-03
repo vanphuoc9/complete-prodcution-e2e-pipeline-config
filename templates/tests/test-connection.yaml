@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "complete-prodcution-e2e-pipeline-config.fullname" . }}-test-connection"
+  labels:
+    {{- include "complete-prodcution-e2e-pipeline-config.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "complete-prodcution-e2e-pipeline-config.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
